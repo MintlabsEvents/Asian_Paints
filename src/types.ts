@@ -4,8 +4,17 @@ export interface FormData {
   fullName: string;
   mobile: string;
   email: string;
-  questionC: QuestionOption | null;
-  questionD: QuestionOption | null;
+
+  employeeCode?: string;
+  unit?: string;
+  territory?: string;
+
+  questionC: string[];
+  questionD: string[];
+
+  agenda?: string;
+
+  pdfUrl?: string;
 }
 
 export type Page = 'START' | 'FORM' | 'LOADING' | 'DOWNLOAD';

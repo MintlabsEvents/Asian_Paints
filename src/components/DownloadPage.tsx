@@ -24,7 +24,7 @@ export const DownloadPage: React.FC<DownloadPageProps> = ({ formData }) => {
         <h2 className="text-3xl font-bold mb-8">Submission Successful</h2>
         
         <a
-          href={getPdfUrl(formData.questionC, formData.questionD)}
+         href={getPdfUrl(formData.questionC?.[0] || null, formData.questionD?.[0] || null)}
           target="_blank"
           rel="noopener noreferrer"
           className="w-full bg-gold hover:bg-gold-hover text-navy font-bold py-4 rounded-lg flex items-center justify-center gap-2 transition-all shadow-lg shadow-gold/20"
