@@ -43,15 +43,7 @@ export const FormPage: React.FC<FormPageProps> = ({
   updateField,
   onSubmit,
 }) => {
-  // Multi-select toggle
-  const toggleMultiSelect = (field: "questionC" | "questionD", value: string) => {
-    const current: string[] = formData[field] || [];
-    if (current.includes(value)) {
-      updateField(field, current.filter((item) => item !== value));
-    } else {
-      updateField(field, [...current, value]);
-    }
-  };
+  
 
   // Strip non-digits, cap at 10 characters
   const handleMobileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -190,95 +182,100 @@ export const FormPage: React.FC<FormPageProps> = ({
             )}
           </div>
 
-          {/* ── SEGMENT (MULTI-SELECT) ── */}
-          <div className="space-y-3">
-            <label className="text-sm font-semibold text-gray-400 uppercase tracking-wider flex items-center gap-2">
-              <Tag size={14} /> Segment
-              <span className="text-xs normal-case font-normal text-gray-500">(Select multiple)</span>
-            </label>
-            <div className="grid grid-cols-2 gap-3">
-              {segmentOptions.map((opt) => {
-                const isActive = formData.questionC?.includes(opt);
-                return (
-                  <label
-                    key={opt}
-                    className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-all ${
-                      isActive
-                        ? "bg-gold/20 border-gold text-gold"
-                        : "bg-navy/50 border-white/10 hover:border-white/30"
-                    }`}
-                  >
-                    <input
-                      type="checkbox"
-                      checked={isActive}
-                      onChange={() => toggleMultiSelect("questionC", opt)}
-                      className="hidden"
-                    />
-                    <div
-                      className={`w-4 h-4 rounded border flex items-center justify-center flex-shrink-0 ${
-                        isActive ? "border-gold bg-gold/30" : "border-gray-500"
-                      }`}
-                    >
-                      {isActive && (
-                        <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
-                          <path d="M1 4L3.5 6.5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
-                      )}
-                    </div>
-                    <span className="font-medium text-sm">{opt}</span>
-                  </label>
-                );
-              })}
-            </div>
-            {errors.questionC && (
-              <p className="text-red-500 text-xs mt-1">⚠ {errors.questionC}</p>
-            )}
+{/* ── SEGMENT (SINGLE SELECT) ── */}
+<div className="space-y-3">
+  <label className="text-sm font-semibold text-gray-400 uppercase tracking-wider flex items-center gap-2">
+    <Tag size={14} /> Segment
+    <span className="text-xs normal-case font-normal text-gray-500">(Select one)</span>
+  </label>
+
+  <div className="grid grid-cols-2 gap-3">
+    {segmentOptions.map((opt) => {
+      const isActive = formData.questionC?.[0] === opt;
+
+      return (
+        <label
+          key={opt}
+          className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-all ${
+            isActive
+              ? "bg-gold/20 border-gold text-gold"
+              : "bg-navy/50 border-white/10 hover:border-white/30"
+          }`}
+        >
+          <input
+            type="radio"
+            name="questionC"
+            checked={isActive}
+            onChange={() => updateField("questionC", [opt])}
+            className="hidden"
+          />
+
+          <div
+            className={`w-4 h-4 rounded-full border flex items-center justify-center ${
+              isActive ? "border-gold" : "border-gray-500"
+            }`}
+          >
+            {isActive && <div className="w-2 h-2 bg-gold rounded-full" />}
           </div>
 
+          <span className="font-medium text-sm">{opt}</span>
+        </label>
+      );
+    })}
+  </div>
+
+  {errors.questionC && (
+    <p className="text-red-500 text-xs mt-1">⚠ {errors.questionC}</p>
+  )}
+</div>
+
           {/* ── CATEGORY (MULTI-SELECT) ── */}
-          <div className="space-y-3">
-            <label className="text-sm font-semibold text-gray-400 uppercase tracking-wider flex items-center gap-2">
-              <Tag size={14} /> Category
-              <span className="text-xs normal-case font-normal text-gray-500">(Select multiple)</span>
-            </label>
-            <div className="grid grid-cols-2 gap-3">
-              {categoryOptions.map((opt) => {
-                const isActive = formData.questionD?.includes(opt);
-                return (
-                  <label
-                    key={opt}
-                    className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-all ${
-                      isActive
-                        ? "bg-gold/20 border-gold text-gold"
-                        : "bg-navy/50 border-white/10 hover:border-white/30"
-                    }`}
-                  >
-                    <input
-                      type="checkbox"
-                      checked={isActive}
-                      onChange={() => toggleMultiSelect("questionD", opt)}
-                      className="hidden"
-                    />
-                    <div
-                      className={`w-4 h-4 rounded border flex items-center justify-center flex-shrink-0 ${
-                        isActive ? "border-gold bg-gold/30" : "border-gray-500"
-                      }`}
-                    >
-                      {isActive && (
-                        <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
-                          <path d="M1 4L3.5 6.5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
-                      )}
-                    </div>
-                    <span className="font-medium text-sm">{opt}</span>
-                  </label>
-                );
-              })}
-            </div>
-            {errors.questionD && (
-              <p className="text-red-500 text-xs mt-1">⚠ {errors.questionD}</p>
-            )}
+{/* ── CATEGORY (SINGLE SELECT) ── */}
+<div className="space-y-3">
+  <label className="text-sm font-semibold text-gray-400 uppercase tracking-wider flex items-center gap-2">
+    <Tag size={14} /> Category
+    <span className="text-xs normal-case font-normal text-gray-500">(Select one)</span>
+  </label>
+
+  <div className="grid grid-cols-2 gap-3">
+    {categoryOptions.map((opt) => {
+      const isActive = formData.questionD?.[0] === opt;
+
+      return (
+        <label
+          key={opt}
+          className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-all ${
+            isActive
+              ? "bg-gold/20 border-gold text-gold"
+              : "bg-navy/50 border-white/10 hover:border-white/30"
+          }`}
+        >
+          <input
+            type="radio"
+            name="questionD"
+            checked={isActive}
+            onChange={() => updateField("questionD", [opt])}
+            className="hidden"
+          />
+
+          <div
+            className={`w-4 h-4 rounded-full border flex items-center justify-center ${
+              isActive ? "border-gold" : "border-gray-500"
+            }`}
+          >
+            {isActive && <div className="w-2 h-2 bg-gold rounded-full" />}
           </div>
+
+          <span className="font-medium text-sm">{opt}</span>
+        </label>
+      );
+    })}
+  </div>
+
+  {errors.questionD && (
+    <p className="text-red-500 text-xs mt-1">⚠ {errors.questionD}</p>
+  )}
+</div>
 
           {/* ── AGENDA (SINGLE SELECT) ── */}
           <div className="space-y-3">

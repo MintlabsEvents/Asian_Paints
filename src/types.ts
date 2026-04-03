@@ -1,20 +1,20 @@
 export type QuestionOption = 'AA' | 'BB' | 'CC' | 'DD';
 
-export interface FormData {
-  fullName: string;
-  mobile: string;
-  email: string;
+  export interface FormData {
+    fullName: string;
+    mobile: string;
+    email: string;
 
-  employeeCode?: string;
-  unit?: string;
-  territory?: string;
+    employeeCode?: string;
+    unit?: string;
+    territory?: string;
 
-  questionC: string[];
-  questionD: string[];
+    questionC: string[];
+    questionD: string[];
 
-  agenda?: string;
+    agenda?: string;
 
-  pdfUrl?: string;
-}
+    pdfUrl?: string;
+  }
 
 export type Page = 'START' | 'FORM' | 'LOADING' | 'DOWNLOAD';
