@@ -2,8 +2,7 @@ export type QuestionOption = 'AA' | 'BB' | 'CC' | 'DD';
 
   export interface FormData {
     fullName: string;
-    mobile: string;
-    email: string;
+
 
     employeeCode?: string;
     unit?: string;

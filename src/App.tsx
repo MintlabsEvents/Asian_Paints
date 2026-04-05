@@ -6,7 +6,6 @@
 import React, { useState } from "react";
 import { AnimatePresence } from "motion/react";
 import { FormData, Page } from "./types";
-import { Navbar } from "./components/Navbar";
 import { StartPage } from "./components/StartPage";
 import { FormPage } from "./components/FormPage";
 import { DownloadPage } from "./components/DownloadPage";
@@ -17,8 +16,6 @@ import { getPdfUrl } from "./constants";
 
 const INITIAL_FORM_DATA: FormData = {
   fullName: "",
-  mobile: "",
-  email: "",
   questionC: [],
   questionD: [],
   employeeCode: "",
@@ -34,28 +31,31 @@ export default function App() {
 
   const handleStart = () => setCurrentPage("FORM");
 
-  /* ── VALIDATION ── */
+  /* ── VALIDATION ──
+     Only validate fields that are actually collected in FormPage.
+     mobile & email are in FormData type but NOT asked in the form,
+     so we skip them here to avoid blocking submission.
+  */
   const validateForm = () => {
     const newErrors: Partial<Record<keyof FormData, string>> = {};
 
     if (!formData.fullName.trim())
       newErrors.fullName = "Employee name is required";
 
-    if (!formData.mobile.trim())
-      newErrors.mobile = "Mobile number is required";
-    else if (!/^\d{10}$/.test(formData.mobile))
-      newErrors.mobile = "Mobile number must be exactly 10 digits";
+    if (!formData.employeeCode.trim())
+      newErrors.employeeCode = "Employee code is required";
 
-    if (!formData.email.trim())
-      newErrors.email = "Email address is required";
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email))
-      newErrors.email = "Invalid email address";
+    if (!formData.unit.trim())
+      newErrors.unit = "Unit is required";
+
+    if (!formData.territory.trim())
+      newErrors.territory = "Territory is required";
 
     if (!formData.questionC || formData.questionC.length === 0)
-      newErrors.questionC = "Please select at least one segment";
+      newErrors.questionC = "Please select a segment";
 
     if (!formData.questionD || formData.questionD.length === 0)
-      newErrors.questionD = "Please select at least one category";
+      newErrors.questionD = "Please select a category";
 
     if (!formData.agenda)
       newErrors.agenda = "Please select an agenda";
@@ -74,9 +74,8 @@ export default function App() {
       try {
         await submitForm(formData);
 
-        const c = formData.questionC[0] || null;
-        const d = formData.questionD[0] || null;
-        const pdfUrl = getPdfUrl(c, d);
+        // getPdfUrl takes agenda value directly (e.g. "Dealer Profitability")
+        const pdfUrl = getPdfUrl(formData.agenda);
 
         setFormData((prev) => ({ ...prev, pdfUrl }));
         setCurrentPage("DOWNLOAD");
@@ -92,7 +91,6 @@ export default function App() {
   const updateField = (field: keyof FormData, value: any) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
 
-    // Clear error for this field as soon as user edits it
     if (errors[field]) {
       setErrors((prev) => {
         const next = { ...prev };
@@ -105,9 +103,7 @@ export default function App() {
   /* ── RENDER ── */
   return (
     <div className="min-h-screen flex flex-col relative">
-      <Navbar />
-
-      <main className="flex-1 flex flex-col pt-24">
+      <main className="flex-1 flex flex-col">
         <AnimatePresence mode="wait">
           {currentPage === "START" && (
             <StartPage onStart={handleStart} />

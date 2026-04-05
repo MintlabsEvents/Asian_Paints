@@ -1,7 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "motion/react";
-import { User, Phone, Mail, Briefcase, MapPin, Tag, Target, LayoutGrid } from "lucide-react";
+import { ChevronRight, ChevronLeft, CheckCircle } from "lucide-react";
 import { FormData } from "../types";
+import LeftLogo from '../assets/saless800.png';
+import RightLogo from '../assets/ops800.png';
+import LapBg from '../assets/images/laptop/bg.png';
+import LapBg2 from '../assets/images/laptop/bg1.png';
+import MobBg from '../assets/images/mobile/bg.png';
+import MobBg2 from '../assets/images/mobile/bg1.png';
 
 interface FormPageProps {
   formData: FormData;
@@ -11,326 +17,393 @@ interface FormPageProps {
 }
 
 const segmentOptions = [
-  "Industries",
-  "Government",
-  "Builders",
-  "CHS",
-  "Social",
-  "Commercial & Residential Infrastructure",
+  { value: "Industries",    label: "Industries" },
+  { value: "Government",    label: "Government" },
+  { value: "Builders",      label: "Builders" },
+  { value: "CHS",           label: "CHS (Co-operative Housing Societies)" },
+  { value: "Social",        label: "Social (Hospitality, Education, etc.)" },
+  { value: "Commercial & Residential Infrastructure", label: "Commercial & Residential Infrastructure" },
 ];
 
 const categoryOptions = [
-  "Flooring",
-  "Waterproofing",
-  "Admixtures",
-  "Powder Repair",
-  "Special Repair",
-  "Tile Adhesives",
-  "Wood Coatings",
+  { value: "Flooring",        label: "Flooring",           sub: "Epoxy and PU range of products" },
+  { value: "Waterproofing",   label: "Waterproofing Cat2", sub: "PU range, Polyurea, APP Membranes, HDPE membranes etc." },
+  { value: "Admixtures",      label: "Admixtures",         sub: "Cement additives, superplasticizers, water reducers, slump reducers etc." },
+  { value: "Powder Repair",   label: "Powder Repair",      sub: "Repair Mortar, Micro Concrete etc." },
+  { value: "Special Repair",  label: "Special Repair",     sub: "Grouts, Rust Removers for Steel, Protective Coatings" },
+  { value: "Tile Adhesives",  label: "Tile Adhesives",     sub: "Regular, tile-on-tile" },
+  { value: "Wood Coatings",   label: "Wood Coatings",      sub: "Products for furniture manufacturer supply (non-retail)" },
 ];
 
+// ⚠️ Values here MUST match keys in AGENDA_PDF_MAPPING in constants.ts exactly
 const agendaOptions = [
-  "Dealer Profitability",
-  "Expand Dealer Network",
-  "Expand Contractor Network",
-  "Engage Network",
-  "Surface Share Gain",
+  { value: "Dealer Profitability",      label: "DEALER PROFITABILITY",                           sub: "Improve Suprema ratios and product in relevant categories and work on dealer profitability" },
+  { value: "Expand Dealer Network",     label: "EXPAND DEALER NETWORK",                          sub: "Increase LUB dealers in the network and hence improve projects servicing" },
+  { value: "Expand Contractor Network", label: "EXPAND CONTRACTOR NETWORK",                      sub: "Identify contractors with capability to take up work in larger products" },
+  { value: "Engage Network",            label: "ENGAGE NETWORK INTO MORE CATEGORIES FOR GROWTH", sub: "Increase engagements of current set of dealers/contractors into more categories and products on offer" },
+  { value: "Surface Share Gain",        label: "SURFACE SHARE & SEGMENT SHARE GAIN",             sub: "Identify and work on underpenetrated segments like factories, govt and PSUs in collaboration with network to expand business" },
 ];
 
-export const FormPage: React.FC<FormPageProps> = ({
-  formData,
-  errors,
-  updateField,
-  onSubmit,
-}) => {
-  
+const optionBase: React.CSSProperties = { background: '#00ddff', border: '2px solid transparent', transition: 'all 0.15s ease' };
+const optionActive: React.CSSProperties = { border: '2px solid white', boxShadow: '0 0 18px rgba(0,221,255,0.7)' };
 
-  // Strip non-digits, cap at 10 characters
-  const handleMobileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const digits = e.target.value.replace(/\D/g, "").slice(0, 10);
-    updateField("mobile", digits);
+export const FormPage: React.FC<FormPageProps> = ({ formData, errors, updateField, onSubmit }) => {
+  const [currentStep, setCurrentStep] = useState(0);
+  const [localError, setLocalError]   = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  type StepType = "multi-text" | "single-select-3col" | "single-select-custom" | "single-select-agenda";
+
+  interface Step {
+    id: string;
+    section: string;
+    subLabel: string;
+    type: StepType;
+    fields?: { id: keyof FormData; placeholder: string }[];
+    options?: { value: string; label: string; sub?: string }[];
+    validate: () => string | null;
+  }
+
+  const steps: Step[] = [
+    /* ── A ── */
+    {
+      id: "stepA",
+      section: "A. Please Enter Your Details",
+      subLabel: "Fill in both fields below",
+      type: "multi-text",
+      fields: [
+        { id: "fullName",     placeholder: "Employee Name" },
+        { id: "employeeCode", placeholder: "Employee Code" },
+      ],
+      validate: () => {
+        if (!formData.fullName?.trim())     return "Employee Name is required";
+        if (!formData.employeeCode?.trim()) return "Employee Code is required";
+        return null;
+      },
+    },
+    /* ── B ── */
+    {
+      id: "stepB",
+      section: "B. Market Cluster Identification",
+      subLabel: "Identify the cluster in your respective market",
+      type: "multi-text",
+      fields: [
+        { id: "unit",      placeholder: "Unit" },
+        { id: "territory", placeholder: "Territory" },
+      ],
+      validate: () => {
+        if (!formData.unit?.trim())      return "Unit is required";
+        if (!formData.territory?.trim()) return "Territory is required";
+        return null;
+      },
+    },
+    /* ── C ── */
+    {
+      id: "stepC",
+      section: "C. Segment Identification",
+      subLabel: "Identify the segment that has the most potential in your territory",
+      type: "single-select-3col",
+      options: segmentOptions,
+      validate: () => (!formData.questionC || (formData.questionC as string[]).length === 0)
+        ? "Please select a segment" : null,
+    },
+    /* ── D ── */
+    {
+      id: "stepD",
+      section: "D. Category Identification",
+      subLabel: "Which non-paint category can be taken up as a focused objective in your territory?",
+      type: "single-select-custom",
+      options: categoryOptions,
+      validate: () => (!formData.questionD || (formData.questionD as string[]).length === 0)
+        ? "Please select a category" : null,
+    },
+    /* ── E ── */
+    {
+      id: "stepE",
+      section: "E. Agenda",
+      subLabel: "Choose the Agenda you want to drive in your territory basis the presentation today",
+      type: "single-select-agenda",
+      options: agendaOptions,
+      validate: () => !formData.agenda ? "Please select an agenda" : null,
+    },
+  ];
+
+  const step = steps[currentStep];
+
+  /* ── Navigation ── */
+  const handleNext = async () => {
+    const err = step.validate();
+    if (err) { setLocalError(err); return; }
+    setLocalError(null);
+
+    if (currentStep < steps.length - 1) {
+      setCurrentStep(currentStep + 1);
+    } else {
+      try {
+        setIsSubmitting(true);
+        const submitEvent = { preventDefault: () => {} } as React.FormEvent;
+        await onSubmit(submitEvent);
+      } catch (error) {
+        console.error("Submit failed:", error);
+      } finally {
+        setIsSubmitting(false);
+      }
+    }
+  };
+
+  const handlePrevious = () => {
+    setLocalError(null);
+    if (currentStep > 0) setCurrentStep(currentStep - 1);
+  };
+
+  /* ── Option helpers ── */
+  const selectGrid   = (fieldId: keyof FormData, val: string) => updateField(fieldId, [val]);
+  const isGridActive = (fieldId: keyof FormData, val: string) => {
+    const v = formData[fieldId];
+    return Array.isArray(v) ? v[0] === val : false;
+  };
+
+  /* ── Pill component ── */
+  const Pill = ({ opt, active, onClick }: {
+    opt: { value: string; label: string; sub?: string };
+    active: boolean;
+    onClick: () => void;
+  }) => (
+    <div
+      onClick={onClick}
+      className="flex items-start gap-3 p-3 rounded-2xl cursor-pointer h-full"
+      style={{ ...optionBase, ...(active ? optionActive : {}) }}
+    >
+      <div className="w-5 h-5 rounded-full border-2 border-white flex items-center justify-center flex-shrink-0 mt-0.5">
+        {active && <div className="w-2.5 h-2.5 bg-white rounded-full" />}
+      </div>
+      <div>
+        <span className="font-bold text-sm md:text-base text-white block">{opt.label}</span>
+        {opt.sub && <span className="text-white/80 text-xs md:text-sm mt-0.5 block">{opt.sub}</span>}
+      </div>
+    </div>
+  );
+
+  /* ── Render step body ── */
+  const renderBody = () => {
+    /* A & B — two text inputs, stacked mobile / side-by-side desktop */
+    if (step.type === "multi-text") {
+      return (
+        <div className="flex flex-col md:flex-row gap-4 w-full">
+          {step.fields!.map((f) => (
+            <div key={f.id} className="flex-1 flex flex-col gap-1">
+              <label className="text-[#00ddff] text-sm font-semibold">{f.placeholder}</label>
+              <input
+                type="text"
+                value={(formData[f.id] as string) || ""}
+                onChange={(e) => updateField(f.id, e.target.value)}
+                placeholder={f.placeholder}
+                className="w-full bg-white/5 border-2 border-[#00ddff]/50 rounded-xl p-4 text-white text-base focus:outline-none focus:border-[#00ddff] transition-all placeholder:text-gray-500"
+              />
+            </div>
+          ))}
+        </div>
+      );
+    }
+
+    /* C — 3 col desktop, 1 col mobile */
+    if (step.type === "single-select-3col") {
+      return (
+        <>
+          <div className="flex flex-col gap-3 md:hidden">
+            {step.options!.map((opt) => (
+              <Pill key={opt.value} opt={opt}
+                active={isGridActive("questionC", opt.value)}
+                onClick={() => selectGrid("questionC", opt.value)} />
+            ))}
+          </div>
+          <div className="hidden md:grid grid-cols-3 gap-3">
+            {step.options!.map((opt) => (
+              <Pill key={opt.value} opt={opt}
+                active={isGridActive("questionC", opt.value)}
+                onClick={() => selectGrid("questionC", opt.value)} />
+            ))}
+          </div>
+        </>
+      );
+    }
+
+    /* D — 2-2-3 desktop, 1 col mobile */
+    if (step.type === "single-select-custom") {
+      const opts = step.options!;
+      return (
+        <>
+          <div className="flex flex-col gap-3 md:hidden">
+            {opts.map((opt) => (
+              <Pill key={opt.value} opt={opt}
+                active={isGridActive("questionD", opt.value)}
+                onClick={() => selectGrid("questionD", opt.value)} />
+            ))}
+          </div>
+          <div className="hidden md:flex flex-col gap-3">
+            {[opts.slice(0, 2), opts.slice(2, 4), opts.slice(4, 7)].map((row, ri) => (
+              <div key={ri} className="grid gap-3" style={{ gridTemplateColumns: `repeat(${row.length}, 1fr)` }}>
+                {row.map((opt) => (
+                  <Pill key={opt.value} opt={opt}
+                    active={isGridActive("questionD", opt.value)}
+                    onClick={() => selectGrid("questionD", opt.value)} />
+                ))}
+              </div>
+            ))}
+          </div>
+        </>
+      );
+    }
+
+    /* E — 2-2-1(centered) desktop, 1 col mobile */
+    if (step.type === "single-select-agenda") {
+      const opts = step.options!;
+      return (
+        <>
+          <div className="flex flex-col gap-3 md:hidden">
+            {opts.map((opt) => (
+              <Pill key={opt.value} opt={opt}
+                active={formData.agenda === opt.value}
+                onClick={() => updateField("agenda", opt.value)} />
+            ))}
+          </div>
+          <div className="hidden md:flex flex-col gap-3">
+            <div className="grid grid-cols-2 gap-3">
+              {opts.slice(0, 2).map((opt) => (
+                <Pill key={opt.value} opt={opt}
+                  active={formData.agenda === opt.value}
+                  onClick={() => updateField("agenda", opt.value)} />
+              ))}
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              {opts.slice(2, 4).map((opt) => (
+                <Pill key={opt.value} opt={opt}
+                  active={formData.agenda === opt.value}
+                  onClick={() => updateField("agenda", opt.value)} />
+              ))}
+            </div>
+            <div className="flex justify-center">
+              <div className="w-1/2">
+                <Pill opt={opts[4]}
+                  active={formData.agenda === opts[4].value}
+                  onClick={() => updateField("agenda", opts[4].value)} />
+              </div>
+            </div>
+          </div>
+        </>
+      );
+    }
+
+    return null;
   };
 
   return (
-    <motion.div
-      key="form"
-      initial={{ opacity: 0, x: 50 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: -50 }}
-      className="flex-1 flex flex-col items-center justify-center py-12 px-6"
-    >
-      <div className="w-full max-w-2xl bg-white/5 backdrop-blur-md p-8 rounded-2xl border border-white/10 shadow-2xl">
-        <h2 className="text-3xl font-bold mb-8 text-gold">
-          Goal Setting Exercise
-        </h2>
+    <div className="relative w-full min-h-screen overflow-x-hidden">
 
-        <form onSubmit={onSubmit} className="space-y-6">
-
-          {/* ── EMPLOYEE NAME ── */}
-          <div className="space-y-2">
-            <label className="text-sm font-semibold text-gray-400 uppercase tracking-wider flex items-center gap-2">
-              <User size={14} /> Employee Name
-            </label>
-            <input
-              type="text"
-              value={formData.fullName}
-              onChange={(e) => updateField("fullName", e.target.value)}
-              placeholder="Enter your full name"
-              className={`w-full bg-navy/50 border ${
-                errors.fullName ? "border-red-500" : "border-white/20"
-              } rounded-lg p-3 focus:outline-none focus:border-gold transition-colors`}
-            />
-            {errors.fullName && (
-              <p className="text-red-500 text-xs mt-1">⚠ {errors.fullName}</p>
-            )}
-          </div>
-
-          {/* ── EMPLOYEE CODE ── */}
-          <div className="space-y-2">
-            <label className="text-sm font-semibold text-gray-400 uppercase tracking-wider flex items-center gap-2">
-              <Briefcase size={14} /> Employee Code
-            </label>
-            <input
-              type="text"
-              value={formData.employeeCode || ""}
-              onChange={(e) => updateField("employeeCode", e.target.value)}
-              placeholder="Enter your employee code"
-              className={`w-full bg-navy/50 border ${
-                errors.employeeCode ? "border-red-500" : "border-white/20"
-              } rounded-lg p-3 focus:outline-none focus:border-gold transition-colors`}
-            />
-            {errors.employeeCode && (
-              <p className="text-red-500 text-xs mt-1">⚠ {errors.employeeCode}</p>
-            )}
-          </div>
-
-          {/* ── MOBILE — digits only, max 10 ── */}
-          <div className="space-y-2">
-            <label className="text-sm font-semibold text-gray-400 uppercase tracking-wider flex items-center gap-2">
-              <Phone size={14} /> Mobile Number
-            </label>
-            <input
-              type="tel"
-              value={formData.mobile}
-              onChange={handleMobileChange}
-              placeholder="10-digit mobile number"
-              maxLength={10}
-              inputMode="numeric"
-              className={`w-full bg-navy/50 border ${
-                errors.mobile ? "border-red-500" : "border-white/20"
-              } rounded-lg p-3 focus:outline-none focus:border-gold transition-colors`}
-            />
-            {errors.mobile && (
-              <p className="text-red-500 text-xs mt-1">⚠ {errors.mobile}</p>
-            )}
-          </div>
-
-          {/* ── EMAIL ── */}
-          <div className="space-y-2">
-            <label className="text-sm font-semibold text-gray-400 uppercase tracking-wider flex items-center gap-2">
-              <Mail size={14} /> Email Address
-            </label>
-            <input
-              type="email"
-              value={formData.email}
-              onChange={(e) => updateField("email", e.target.value)}
-              placeholder="name@company.com"
-              className={`w-full bg-navy/50 border ${
-                errors.email ? "border-red-500" : "border-white/20"
-              } rounded-lg p-3 focus:outline-none focus:border-gold transition-colors`}
-            />
-            {errors.email && (
-              <p className="text-red-500 text-xs mt-1">⚠ {errors.email}</p>
-            )}
-          </div>
-
-          {/* ── UNIT ── */}
-          <div className="space-y-2">
-            <label className="text-sm font-semibold text-gray-400 uppercase tracking-wider flex items-center gap-2">
-              <LayoutGrid size={14} /> Unit
-            </label>
-            <input
-              type="text"
-              value={formData.unit || ""}
-              onChange={(e) => updateField("unit", e.target.value)}
-              placeholder="Enter your unit"
-              className={`w-full bg-navy/50 border ${
-                errors.unit ? "border-red-500" : "border-white/20"
-              } rounded-lg p-3 focus:outline-none focus:border-gold transition-colors`}
-            />
-            {errors.unit && (
-              <p className="text-red-500 text-xs mt-1">⚠ {errors.unit}</p>
-            )}
-          </div>
-
-          {/* ── TERRITORY ── */}
-          <div className="space-y-2">
-            <label className="text-sm font-semibold text-gray-400 uppercase tracking-wider flex items-center gap-2">
-              <MapPin size={14} /> Territory
-            </label>
-            <input
-              type="text"
-              value={formData.territory || ""}
-              onChange={(e) => updateField("territory", e.target.value)}
-              placeholder="Enter your territory"
-              className={`w-full bg-navy/50 border ${
-                errors.territory ? "border-red-500" : "border-white/20"
-              } rounded-lg p-3 focus:outline-none focus:border-gold transition-colors`}
-            />
-            {errors.territory && (
-              <p className="text-red-500 text-xs mt-1">⚠ {errors.territory}</p>
-            )}
-          </div>
-
-{/* ── SEGMENT (SINGLE SELECT) ── */}
-<div className="space-y-3">
-  <label className="text-sm font-semibold text-gray-400 uppercase tracking-wider flex items-center gap-2">
-    <Tag size={14} /> Segment
-    <span className="text-xs normal-case font-normal text-gray-500">(Select one)</span>
-  </label>
-
-  <div className="grid grid-cols-2 gap-3">
-    {segmentOptions.map((opt) => {
-      const isActive = formData.questionC?.[0] === opt;
-
-      return (
-        <label
-          key={opt}
-          className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-all ${
-            isActive
-              ? "bg-gold/20 border-gold text-gold"
-              : "bg-navy/50 border-white/10 hover:border-white/30"
-          }`}
-        >
-          <input
-            type="radio"
-            name="questionC"
-            checked={isActive}
-            onChange={() => updateField("questionC", [opt])}
-            className="hidden"
-          />
-
-          <div
-            className={`w-4 h-4 rounded-full border flex items-center justify-center ${
-              isActive ? "border-gold" : "border-gray-500"
-            }`}
-          >
-            {isActive && <div className="w-2 h-2 bg-gold rounded-full" />}
-          </div>
-
-          <span className="font-medium text-sm">{opt}</span>
-        </label>
-      );
-    })}
-  </div>
-
-  {errors.questionC && (
-    <p className="text-red-500 text-xs mt-1">⚠ {errors.questionC}</p>
-  )}
-</div>
-
-          {/* ── CATEGORY (MULTI-SELECT) ── */}
-{/* ── CATEGORY (SINGLE SELECT) ── */}
-<div className="space-y-3">
-  <label className="text-sm font-semibold text-gray-400 uppercase tracking-wider flex items-center gap-2">
-    <Tag size={14} /> Category
-    <span className="text-xs normal-case font-normal text-gray-500">(Select one)</span>
-  </label>
-
-  <div className="grid grid-cols-2 gap-3">
-    {categoryOptions.map((opt) => {
-      const isActive = formData.questionD?.[0] === opt;
-
-      return (
-        <label
-          key={opt}
-          className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-all ${
-            isActive
-              ? "bg-gold/20 border-gold text-gold"
-              : "bg-navy/50 border-white/10 hover:border-white/30"
-          }`}
-        >
-          <input
-            type="radio"
-            name="questionD"
-            checked={isActive}
-            onChange={() => updateField("questionD", [opt])}
-            className="hidden"
-          />
-
-          <div
-            className={`w-4 h-4 rounded-full border flex items-center justify-center ${
-              isActive ? "border-gold" : "border-gray-500"
-            }`}
-          >
-            {isActive && <div className="w-2 h-2 bg-gold rounded-full" />}
-          </div>
-
-          <span className="font-medium text-sm">{opt}</span>
-        </label>
-      );
-    })}
-  </div>
-
-  {errors.questionD && (
-    <p className="text-red-500 text-xs mt-1">⚠ {errors.questionD}</p>
-  )}
-</div>
-
-          {/* ── AGENDA (SINGLE SELECT) ── */}
-          <div className="space-y-3">
-            <label className="text-sm font-semibold text-gray-400 uppercase tracking-wider flex items-center gap-2">
-              <Target size={14} /> Agenda
-              <span className="text-xs normal-case font-normal text-gray-500">(Select one)</span>
-            </label>
-            <div className="space-y-2">
-              {agendaOptions.map((opt) => {
-                const isActive = formData.agenda === opt;
-                return (
-                  <label
-                    key={opt}
-                    className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-all ${
-                      isActive
-                        ? "bg-gold/20 border-gold text-gold"
-                        : "bg-navy/50 border-white/10 hover:border-white/30"
-                    }`}
-                  >
-                    <input
-                      type="radio"
-                      name="agenda"
-                      checked={isActive}
-                      onChange={() => updateField("agenda", opt)}
-                      className="hidden"
-                    />
-                    <div
-                      className={`w-4 h-4 rounded-full border flex items-center justify-center flex-shrink-0 ${
-                        isActive ? "border-gold" : "border-gray-500"
-                      }`}
-                    >
-                      {isActive && (
-                        <div className="w-2 h-2 bg-gold rounded-full" />
-                      )}
-                    </div>
-                    <span className="font-medium text-sm">{opt}</span>
-                  </label>
-                );
-              })}
-            </div>
-            {errors.agenda && (
-              <p className="text-red-500 text-xs mt-1">⚠ {errors.agenda}</p>
-            )}
-          </div>
-
-          {/* ── SUBMIT ── */}
-          <button
-            type="submit"
-            className="w-full bg-gold hover:bg-gold-hover text-navy font-bold py-4 rounded-lg mt-4 transition-all shadow-lg shadow-gold/10"
-          >
-            Submit Application
-          </button>
-
-        </form>
+      {/* BACKGROUND */}
+      <div className="hidden md:block absolute inset-0 z-0">
+        <img src={LapBg}  alt="" className="absolute inset-0 w-full h-full object-cover" />
+        <img src={LapBg2} alt="" className="absolute inset-0 w-full h-full object-cover" />
       </div>
-    </motion.div>
+      <div className="block md:hidden absolute inset-0 z-0">
+        <img src={MobBg}  alt="" className="absolute inset-0 w-full h-full object-cover" />
+        <img src={MobBg2} alt="" className="absolute inset-0 w-full h-full object-cover" />
+      </div>
+
+      {/* LOGOS — exact same as StartPage */}
+      <div className="absolute top-[17%] md:top-[19%] left-1/2 -translate-x-1/2 w-full max-w-[1200px] z-20 flex justify-between items-center">
+        <img src={LeftLogo}  alt="Left Logo"  className="h-[50px] md:h-[120px] w-auto ml-[12%] md:ml-[0%] lg:ml-[0%]" />
+        <img src={RightLogo} alt="Right Logo" className="h-[50px] md:h-[120px] w-auto mr-[10%] md:mr-[5%] lg:mr-[0%]" />
+      </div>
+
+      {/* CONTENT */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="relative z-10 flex flex-col items-center w-full pb-12"
+      >
+        {/* Spacer: clears logos on each breakpoint */}
+        <div className="block md:hidden" style={{ height: 'calc(17vh + 90px)' }} />
+        <div className="hidden md:block"  style={{ height: 'calc(19vh + 160px)' }} />
+
+        {/* 90% wide container */}
+        <div style={{ width: '90%', maxWidth: '1100px', margin: '0 auto' }}>
+          <motion.div
+            key={step.id}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3 }}
+          >
+            {/* Section heading */}
+            <h2
+              className="font-bold text-center mb-1 pb-2"
+              style={{
+                color: 'white',
+                fontSize: 'clamp(1.3rem, 3.5vw, 2.2rem)',
+                textShadow: '0 0 24px #00ddff',
+                borderBottom: '2px solid #00ddff',
+                lineHeight: 1.2,
+              }}
+            >
+              {step.section}
+            </h2>
+
+            {/* Sub-label */}
+            <p
+              className="text-center font-medium mt-2 mb-5"
+              style={{ color: 'rgba(0,221,255,0.85)', fontSize: 'clamp(0.78rem, 1.8vw, 1rem)' }}
+            >
+              {step.subLabel}
+            </p>
+
+            {/* Body */}
+            <div className="mb-6">
+              {renderBody()}
+              {localError && (
+                <motion.p
+                  initial={{ opacity: 0, y: -8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="text-red-400 text-sm mt-3 flex items-center gap-1"
+                >
+                  <span>⚠</span> {localError}
+                </motion.p>
+              )}
+            </div>
+
+            {/* Navigation */}
+            <div className="flex gap-3">
+              {currentStep > 0 && (
+                <button
+                  type="button"
+                  onClick={handlePrevious}
+                  disabled={isSubmitting}
+                  className="flex-1 bg-white/10 hover:bg-white/20 text-white font-semibold py-3 rounded-xl transition-all flex items-center justify-center gap-2 border border-white/20"
+                >
+                  <ChevronLeft size={20} /> Previous
+                </button>
+              )}
+              <button
+                type="button"
+                onClick={handleNext}
+                disabled={isSubmitting}
+                className="flex-1 font-bold py-3 rounded-xl transition-all flex items-center justify-center gap-2 disabled:opacity-60"
+                style={{ background: '#00ddff', color: '#001a2e', boxShadow: '0 4px 20px rgba(0,221,255,0.3)' }}
+              >
+                {currentStep === steps.length - 1 ? (
+                  isSubmitting
+                    ? "Submitting..."
+                    : <> Submit <CheckCircle size={20} /> </>
+                ) : (
+                  <> Next <ChevronRight size={20} /> </>
+                )}
+              </button>
+            </div>
+          </motion.div>
+        </div>
+      </motion.div>
+
+    </div>
   );
 };
