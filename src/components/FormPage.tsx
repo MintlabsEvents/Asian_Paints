@@ -297,6 +297,14 @@ export const FormPage: React.FC<FormPageProps> = ({ formData, errors, updateFiel
     return null;
   };
 
+  // Determine mobile width based on step (first 2 steps = 50%, rest = 70%)
+  const getMobileWidth = () => {
+    if (currentStep === 0 || currentStep === 1) {
+      return "w-[50%]";
+    }
+    return "w-[70%]";
+  };
+
   return (
     <div className="relative w-full min-h-screen overflow-x-hidden">
 
@@ -323,12 +331,12 @@ export const FormPage: React.FC<FormPageProps> = ({ formData, errors, updateFiel
         exit={{ opacity: 0 }}
         className="relative z-10 flex flex-col items-center w-full pb-12"
       >
-        {/* Spacer: clears logos on each breakpoint */}
-        <div className="block md:hidden" style={{ height: 'calc(17vh + 90px)' }} />
+        {/* Spacer: increased to ensure question always below logos with gap */}
+        <div className="block md:hidden" style={{ height: 'calc(17vh + 120px)' }} />
         <div className="hidden md:block"  style={{ height: 'calc(19vh + 160px)' }} />
 
-        {/* 90% wide container */}
-        <div style={{ width: '90%', maxWidth: '1100px', margin: '0 auto' }}>
+        {/* Conditional width: 50% for steps 0-1, 70% for steps 2-4 on mobile, 90% on desktop */}
+        <div className={`md:w-[90%] ${getMobileWidth()} max-w-[1100px] mx-auto`}>
           <motion.div
             key={step.id}
             initial={{ opacity: 0, y: 20 }}
