@@ -173,7 +173,7 @@ const { images } = useImages();
   }) => (
     <div
       onClick={onClick}
-      className="flex items-start gap-3 p-3 rounded-2xl cursor-pointer h-full"
+      className="flex items-start gap-3 p-3 rounded-2xl cursor-pointer h-autop"
       style={{ ...optionBase, ...(active ? optionActive : {}) }}
     >
       <div className="w-5 h-5 rounded-full border-2 border-white flex items-center justify-center flex-shrink-0 mt-0.5">
@@ -332,8 +332,8 @@ const { images } = useImages();
 
       {/* LOGOS */}
       <div className="absolute top-[17%] md:top-[19%] left-1/2 -translate-x-1/2 w-full max-w-[1200px] z-20 flex justify-between items-center">
-        <img src={images.leftLogo} alt="Left Logo" className="h-[50px] md:h-[120px] w-auto ml-[12%] md:ml-[0%] lg:ml-[0%]" />
-        <img src={images.rightLogo} alt="Right Logo" className="h-[50px] md:h-[120px] w-auto mr-[10%] md:mr-[5%] lg:mr-[0%]" />
+        <img src={images.leftLogo} alt="Left Logo"   className="h-[40px] md:h-[120px] w-auto ml-[18%] md:ml-[0%] lg:ml-[0%]" />
+        <img src={images.rightLogo} alt="Right Logo" className="h-[40px] md:h-[120px] w-auto mr-[15%] md:mr-[5%] lg:mr-[0%]" />
       </div>
 
       {/* CONTENT */}
