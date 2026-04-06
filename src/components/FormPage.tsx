@@ -103,7 +103,7 @@ const { images } = useImages();
     {
       id: "stepC",
       section: "C. Segment Identification",
-      subLabel: "Identify the segment that has the most potential in your territory",
+      subLabel: "Identify the segment that has the most potential in your territory:",
       type: "single-select-3col",
       options: segmentOptions,
       validate: () => (!formData.questionC || (formData.questionC as string[]).length === 0)
@@ -113,7 +113,7 @@ const { images } = useImages();
     {
       id: "stepD",
       section: "D. Category Identification",
-      subLabel: "Which non-paint category can be taken up as a focused objective in your territory?",
+      subLabel: "Which non-paint category can be taken up as a focused objective in your territory.",
       type: "single-select-custom",
       options: categoryOptions,
       validate: () => (!formData.questionD || (formData.questionD as string[]).length === 0)
@@ -123,7 +123,7 @@ const { images } = useImages();
     {
       id: "stepE",
       section: "E. Agenda",
-      subLabel: "Choose the Agenda you want to drive in your territory basis the presentation today",
+      subLabel: "Choose the Agenda you want to drive in your territory basis the presentation today:",
       type: "single-select-agenda",
       options: agendaOptions,
       validate: () => !formData.agenda ? "Please select an agenda" : null,
