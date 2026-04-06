@@ -173,7 +173,7 @@ const { images } = useImages();
   }) => (
     <div
       onClick={onClick}
-      className="flex items-start gap-3 p-3 rounded-2xl cursor-pointer h-autop"
+      className="flex items-start gap-3 p-3 rounded-2xl cursor-pointer h-auto "
       style={{ ...optionBase, ...(active ? optionActive : {}) }}
     >
       <div className="w-5 h-5 rounded-full border-2 border-white flex items-center justify-center flex-shrink-0 mt-0.5">
@@ -230,71 +230,69 @@ const { images } = useImages();
       );
     }
 
-    /* D — 2-2-3 desktop, 1 col mobile */
-    if (step.type === "single-select-custom") {
-      const opts = step.options!;
-      return (
-        <>
-          <div className="flex flex-col gap-3 md:hidden">
-            {opts.map((opt) => (
-              <Pill key={opt.value} opt={opt}
-                active={isGridActive("questionD", opt.value)}
-                onClick={() => selectGrid("questionD", opt.value)} />
-            ))}
-          </div>
-          <div className="hidden md:flex flex-col gap-3">
-            {[opts.slice(0, 2), opts.slice(2, 4), opts.slice(4, 7)].map((row, ri) => (
-              <div key={ri} className="grid gap-3" style={{ gridTemplateColumns: `repeat(${row.length}, 1fr)` }}>
-                {row.map((opt) => (
-                  <Pill key={opt.value} opt={opt}
-                    active={isGridActive("questionD", opt.value)}
-                    onClick={() => selectGrid("questionD", opt.value)} />
-                ))}
-              </div>
-            ))}
-          </div>
-        </>
-      );
-    }
+/* D — consistent grid like C */
+if (step.type === "single-select-custom") {
+  const opts = step.options!;
+  return (
+    <>
+      {/* Mobile */}
+      <div className="flex flex-col gap-3 md:hidden">
+        {opts.map((opt) => (
+          <Pill
+            key={opt.value}
+            opt={opt}
+            active={isGridActive("questionD", opt.value)}
+            onClick={() => selectGrid("questionD", opt.value)}
+          />
+        ))}
+      </div>
 
-    /* E — 2-2-1(centered) desktop, 1 col mobile */
-    if (step.type === "single-select-agenda") {
-      const opts = step.options!;
-      return (
-        <>
-          <div className="flex flex-col gap-3 md:hidden">
-            {opts.map((opt) => (
-              <Pill key={opt.value} opt={opt}
-                active={formData.agenda === opt.value}
-                onClick={() => updateField("agenda", opt.value)} />
-            ))}
-          </div>
-          <div className="hidden md:flex flex-col gap-3">
-            <div className="grid grid-cols-2 gap-3">
-              {opts.slice(0, 2).map((opt) => (
-                <Pill key={opt.value} opt={opt}
-                  active={formData.agenda === opt.value}
-                  onClick={() => updateField("agenda", opt.value)} />
-              ))}
-            </div>
-            <div className="grid grid-cols-2 gap-3">
-              {opts.slice(2, 4).map((opt) => (
-                <Pill key={opt.value} opt={opt}
-                  active={formData.agenda === opt.value}
-                  onClick={() => updateField("agenda", opt.value)} />
-              ))}
-            </div>
-            <div className="flex justify-center">
-              <div className="w-1/2">
-                <Pill opt={opts[4]}
-                  active={formData.agenda === opts[4].value}
-                  onClick={() => updateField("agenda", opts[4].value)} />
-              </div>
-            </div>
-          </div>
-        </>
-      );
-    }
+      {/* Desktop — SAME AS C */}
+      <div className="hidden md:grid grid-cols-3 gap-3">
+        {opts.map((opt) => (
+          <Pill
+            key={opt.value}
+            opt={opt}
+            active={isGridActive("questionD", opt.value)}
+            onClick={() => selectGrid("questionD", opt.value)}
+          />
+        ))}
+      </div>
+    </>
+  );
+}
+
+/* E — consistent grid like C */
+if (step.type === "single-select-agenda") {
+  const opts = step.options!;
+  return (
+    <>
+      {/* Mobile */}
+      <div className="flex flex-col gap-3 md:hidden">
+        {opts.map((opt) => (
+          <Pill
+            key={opt.value}
+            opt={opt}
+            active={formData.agenda === opt.value}
+            onClick={() => updateField("agenda", opt.value)}
+          />
+        ))}
+      </div>
+
+      {/* Desktop — SAME AS C */}
+      <div className="hidden md:grid grid-cols-3 gap-3">
+        {opts.map((opt) => (
+          <Pill
+            key={opt.value}
+            opt={opt}
+            active={formData.agenda === opt.value}
+            onClick={() => updateField("agenda", opt.value)}
+          />
+        ))}
+      </div>
+    </>
+  );
+}
 
     return null;
   };
@@ -304,21 +302,39 @@ const { images } = useImages();
     if (currentStep === 0 || currentStep === 1) {
       return "w-[50%]";
     }
-    return "w-[70%]";
+    return "w-[75%]";
   };
 
   return (
     <div className="relative w-full min-h-screen overflow-x-hidden">
 
       {/* BACKGROUND */}
-      <div className="hidden md:block absolute inset-0 z-0">
-        <img src={LapBg}  alt="" className="absolute inset-0 w-full h-full object-cover" />
-        <img src={LapBg2} alt="" className="absolute inset-0 w-full h-full object-cover" />
-      </div>
-      <div className="block md:hidden absolute inset-0 z-0">
-        <img src={MobBg}  alt="" className="absolute inset-0 w-full h-full object-cover" />
-        <img src={MobBg2} alt="" className="absolute inset-0 w-full h-full object-cover" />
-      </div>
+{/* BACKGROUND */}
+<div className="hidden md:block absolute inset-0 z-0">
+  <img
+    src={images.lapBg}
+    alt=""
+    className="absolute inset-0 w-full h-full object-cover"
+  />
+  <img
+    src={images.lapBg2}
+    alt=""
+    className="absolute inset-0 w-full h-full object-contain"
+  />
+</div>
+
+<div className="block md:hidden absolute inset-0 z-0">
+  <img
+    src={images.mobBg}
+    alt=""
+    className="absolute inset-0 w-full h-full object-cover"
+  />
+  <img
+    src={images.mobBg2}
+    alt=""
+    className="absolute inset-0 w-full h-full object-contain"
+  />
+</div>
 
       {/* LOGOS — exact same as StartPage */}
       <div className="hidden md:block absolute inset-0 z-0">

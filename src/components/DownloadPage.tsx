@@ -6,11 +6,11 @@ import { downloadPdf } from '../api/api';
 import { useImages } from '../context/ImageContext';
 
 export const AGENDA_PDF_MAPPING: Record<string, string> = {
-  "Dealer Profitability": "1ORooinf6m7eMgx1imIIZYI6ZZNYy0cUX",
-  "Expand Contractor Network": "1jTowox389VK34H2ehhSPJV4gDdKTAkBO",
-  "Expand Dealer Network": "1sog1htnU9Dq6Kum2dohCLQCjt1uRP-dE",
-  "Surface Share Gain": "1b5uUhR9wQLPrun_C-_04ZyCHcqLVkKtQ",
-  "Engage Network": "1CWhPgacVzIDF_yVMtE5dukxQ2F25Ixok",
+  "Dealer Profitability": "1niGKC5yhPCw6a46A6h7Nh-pLdmcQ_Vzi",
+  "Expand Contractor Network": "1wbgrtOa3F8AYCUICeCGRBsjP3hazviyb",
+  "Expand Dealer Network": "1smRL_g_Ekf9DZZU2EDp6PHz5SynAdNAM",
+  "Surface Share Gain": "1mzqAPHWVMIh5ImY79zUg68dIYALvu4sB",
+  "Engage Network": "1G5oZL7yfxJnsN17aR2B1iH50nmfGP1xv", // (your "category expansion")
 };
 
 interface DownloadPageProps {
@@ -22,16 +22,24 @@ export const DownloadPage: React.FC<DownloadPageProps> = ({ formData }) => {
   const [isDownloaded, setIsDownloaded] = useState(false);
   const { images } = useImages();
 
-  const handleDownload = async () => {
-    setIsDownloading(true);
+const handleDownload = async () => {
+  setIsDownloading(true);
 
-    const fileId = AGENDA_PDF_MAPPING[formData.agenda];
+  const fileId = AGENDA_PDF_MAPPING[formData.agenda];
 
-    await downloadPdf(fileId);
-
-    setIsDownloading(false);
-    setIsDownloaded(true);
+  const fileNames: Record<string, string> = {
+    "Dealer Profitability": "Dealer_Profitability.pdf",
+    "Expand Contractor Network": "Expand_Contractor_Network.pdf",
+    "Expand Dealer Network": "Expand_Dealer_Network.pdf",
+    "Surface Share Gain": "Surface_Share_Gain.pdf",
+    "Engage Network": "Category_Expansion.pdf",
   };
+
+  await downloadPdf(fileId, fileNames[formData.agenda]);
+
+  setIsDownloading(false);
+  setIsDownloaded(true);
+};
 
   return (
     <div className="relative w-full h-screen overflow-hidden">
@@ -62,7 +70,7 @@ export const DownloadPage: React.FC<DownloadPageProps> = ({ formData }) => {
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="w-full max-w-xl bg-white/5 backdrop-blur-md p-8 rounded-2xl border border-white/10 shadow-2xl"
+            className="w-full max-w-xl bg-transparent  p-8 rounded-2xl shadow-2xl"
           >
             <div className="w-20 h-20 bg-[#00ddff]/20 rounded-full flex items-center justify-center mx-auto mb-6">
               <CheckCircle2 size={40} className="text-[#00ddff]" />
@@ -74,7 +82,7 @@ export const DownloadPage: React.FC<DownloadPageProps> = ({ formData }) => {
 
             <button
               onClick={handleDownload}
-              className="w-full bg-[#00ddff] hover:bg-[#4ea9b7] text-navy font-bold py-4 rounded-lg flex items-center justify-center gap-2 transition-all"
+              className="w-full ml-1 bg-[#00ddff] hover:bg-[#4ea9b7] text-navy font-bold py-4 rounded-lg flex items-center justify-center gap-2 transition-all"
             >
               <Download size={20} /> Download PDF
             </button>
@@ -101,7 +109,7 @@ export const DownloadPage: React.FC<DownloadPageProps> = ({ formData }) => {
             </h2>
 
             <p className="text-gray-400">
-              Please wait while we prepare your file...
+              Please wait while we <br/>prepare your file...
             </p>
           </motion.div>
 
@@ -120,7 +128,7 @@ export const DownloadPage: React.FC<DownloadPageProps> = ({ formData }) => {
             </h2>
 
             <p className="text-gray-400">
-              You can check your downloads folder.
+              You can check<br/> your downloads folder.
             </p>
           </motion.div>
 

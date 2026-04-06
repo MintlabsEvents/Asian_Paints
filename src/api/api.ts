@@ -28,7 +28,7 @@ export const submitForm = async (formData: any) => {
 /* =============================
    DOWNLOAD PDF
 ============================= */
-export const downloadPdf = async (fileId: string) => {
+export const downloadPdf = async (fileId: string, fileName = "document.pdf") => {
   try {
     const res = await fetch(`${API_BASE_URL}/api/download/${fileId}`);
 
@@ -40,11 +40,14 @@ export const downloadPdf = async (fileId: string) => {
 
     const url = window.URL.createObjectURL(blob);
     const link = document.createElement("a");
+
     link.href = url;
-    link.download = "file.pdf";
+    link.download = fileName; // ✅ dynamic filename
     document.body.appendChild(link);
+
     link.click();
-    link.remove();
+
+    document.body.removeChild(link);
     window.URL.revokeObjectURL(url);
 
   } catch (error) {
