@@ -63,7 +63,7 @@ export const StartPage: React.FC<StartPageProps> = ({ onStart }) => {
           className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full"
         >
           <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-white">
-           Plan your <br/> <span className="text-[#00ddff] mt-4">mission</span>
+          PLAN YOUR <br/> <span className="text-[#00ddff] mt-4">MISSION</span>
           </h1>
         </motion.div>
 

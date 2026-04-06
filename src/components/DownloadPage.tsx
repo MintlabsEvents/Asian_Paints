@@ -86,7 +86,7 @@ const handleDownload = async () => {
               onClick={handleDownload}
               className="w-full ml-1 bg-[#00ddff] hover:bg-[#4ea9b7] text-navy font-bold py-4 rounded-lg flex items-center justify-center gap-2 transition-all"
             >
-              <Download size={20} /> Download PDF
+              <Download size={20} /> Download Mission Roadmap
             </button>
           </motion.div>
 

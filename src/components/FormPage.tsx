@@ -43,7 +43,7 @@ const agendaOptions = [
   { value: "Expand Dealer Network",     label: "Expand dealer network:",                          sub: "Increase LUB dealers in the network and hence improve projects servicing" },
   { value: "Expand Contractor Network", label: "Expand contractor network:",                      sub: "Identify contractors with capability to take up work in larger products" },
   { value: "Engage Network",            label: "Engage network into more categories for growth:", sub: "Increase engagements of current set of dealers/contractors into more categories and products on offer" },
-  { value: "Surface Share Gain",        label: "Surface share & segemnt share gain:",             sub: "Identify and work on underpenetrated segments like factories, govt and PSUs in collaboration with network to expand business" },
+  { value: "Surface Share Gain",        label: "Surface share & segemnt share gain:",             sub: "Identify and work on underpenetrated segments like factories, Govt. and PSUs in collaboration with network to expand business" },
 ];
 
 const optionBase: React.CSSProperties = { background: '#00ddff', border: '2px solid transparent', transition: 'all 0.15s ease' };
@@ -70,7 +70,7 @@ const { images } = useImages();
     /* ── A ── */
     {
       id: "stepA",
-     section: "A. Please enter your details",
+     section: "Please enter your details",
       subLabel: "Fill in both fields below",
       type: "multi-text",
       fields: [
@@ -86,7 +86,7 @@ const { images } = useImages();
     /* ── B ── */
     {
       id: "stepB",
-      section: "B. Market Cluster Identification",
+      section: "Market Cluster Identification",
       subLabel: "Identify the cluster in your respective market",
       type: "multi-text",
       fields: [
@@ -102,7 +102,7 @@ const { images } = useImages();
     /* ── C ── */
     {
       id: "stepC",
-      section: "C. Segment Identification",
+      section: "Segment Identification",
 subLabel: (
   <>
     Identify the segment that has the most potential in your territory:
@@ -118,10 +118,10 @@ subLabel: (
     /* ── D ── */
     {
       id: "stepD",
-      section: "D. Category Identification",
+      section: "Category Identification",
      subLabel: (
   <>
-    Which non-paint categories basis your market observation can be taken up as a focused objective in your territory.
+    Which non-paint categories basis your market observation can be taken up as a focused objective in your territory?
     <br />
     (Select any one from the following options)
   </>
@@ -134,7 +134,7 @@ subLabel: (
     /* ── E ── */
     {
       id: "stepE",
-      section: "E. Agenda",
+      section: "Mission Objectives",
      subLabel: (
   <>
     Choose the Agenda you want to drive in your territory basis the presentation today
