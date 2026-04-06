@@ -403,6 +403,7 @@ if (step.type === "single-select-agenda") {
     marginRight: 'auto',
     display: 'block',
     textAlign: 'center',
+    marginLeft:'5px'
   }}
 >
   {step.section}
