@@ -19,12 +19,12 @@ interface FormPageProps {
 }
 
 const segmentOptions = [
-  { value: "Industries",    label: "Industries" },
-  { value: "Government",    label: "Government" },
-  { value: "Builders",      label: "Builders" },
-  { value: "CHS",           label: "CHS (Co-operative Housing Societies)" },
-  { value: "Social",        label: "Social (Hospitality, Education, etc.)" },
-  { value: "Commercial & Residential Infrastructure", label: "Commercial & Residential Infrastructure" },
+  { value: "Factories", label: "Factories" },
+  { value: "Government", label: "Government" },
+  { value: "Builders", label: "Builders" },
+  { value: "CHS", label: "CHS" },
+  { value: "Hotels", label: "Hotels" },
+  { value: "Educational institutions", label: "Educational institutions" },
 ];
 
 const categoryOptions = [
@@ -39,11 +39,11 @@ const categoryOptions = [
 
 // ⚠️ Values here MUST match keys in AGENDA_PDF_MAPPING in constants.ts exactly
 const agendaOptions = [
-  { value: "Dealer Profitability",      label: "DEALER PROFITABILITY",                           sub: "Improve Suprema ratios and product in relevant categories and work on dealer profitability" },
-  { value: "Expand Dealer Network",     label: "EXPAND DEALER NETWORK",                          sub: "Increase LUB dealers in the network and hence improve projects servicing" },
-  { value: "Expand Contractor Network", label: "EXPAND CONTRACTOR NETWORK",                      sub: "Identify contractors with capability to take up work in larger products" },
-  { value: "Engage Network",            label: "ENGAGE NETWORK INTO MORE CATEGORIES FOR GROWTH", sub: "Increase engagements of current set of dealers/contractors into more categories and products on offer" },
-  { value: "Surface Share Gain",        label: "SURFACE SHARE & SEGMENT SHARE GAIN",             sub: "Identify and work on underpenetrated segments like factories, govt and PSUs in collaboration with network to expand business" },
+  { value: "Dealer Profitability",      label: "Dealer profitability:",                           sub: "Improve Suprema ratios and product in relevant categories and work on dealer profitability" },
+  { value: "Expand Dealer Network",     label: "Expand dealer network:",                          sub: "Increase LUB dealers in the network and hence improve projects servicing" },
+  { value: "Expand Contractor Network", label: "Expand contractor network:",                      sub: "Identify contractors with capability to take up work in larger products" },
+  { value: "Engage Network",            label: "Engage network into more categories for growth:", sub: "Increase engagements of current set of dealers/contractors into more categories and products on offer" },
+  { value: "Surface Share Gain",        label: "Surface share & segemnt share gain:",             sub: "Identify and work on underpenetrated segments like factories, govt and PSUs in collaboration with network to expand business" },
 ];
 
 const optionBase: React.CSSProperties = { background: '#00ddff', border: '2px solid transparent', transition: 'all 0.15s ease' };
@@ -70,7 +70,7 @@ const { images } = useImages();
     /* ── A ── */
     {
       id: "stepA",
-      section: "A. Please Enter Your Details",
+     section: "A. Please enter your details",
       subLabel: "Fill in both fields below",
       type: "multi-text",
       fields: [
@@ -103,7 +103,13 @@ const { images } = useImages();
     {
       id: "stepC",
       section: "C. Segment Identification",
-      subLabel: "Identify the segment that has the most potential in your territory:",
+subLabel: (
+  <>
+    Identify the segment that has the most potential in your territory:
+    <br />
+    (Select any one from the following options)
+  </>
+),
       type: "single-select-3col",
       options: segmentOptions,
       validate: () => (!formData.questionC || (formData.questionC as string[]).length === 0)
@@ -113,7 +119,13 @@ const { images } = useImages();
     {
       id: "stepD",
       section: "D. Category Identification",
-      subLabel: "Which non-paint category can be taken up as a focused objective in your territory.",
+     subLabel: (
+  <>
+    Which non-paint categories basis your market observation can be taken up as a focused objective in your territory.
+    <br />
+    (Select any one from the following options)
+  </>
+),
       type: "single-select-custom",
       options: categoryOptions,
       validate: () => (!formData.questionD || (formData.questionD as string[]).length === 0)
@@ -123,7 +135,13 @@ const { images } = useImages();
     {
       id: "stepE",
       section: "E. Agenda",
-      subLabel: "Choose the Agenda you want to drive in your territory basis the presentation today:",
+     subLabel: (
+  <>
+    Choose the Agenda you want to drive in your territory basis the presentation today
+    <br />
+    (Select any one from the following options)
+  </>
+),
       type: "single-select-agenda",
       options: agendaOptions,
       validate: () => !formData.agenda ? "Please select an agenda" : null,
@@ -373,18 +391,22 @@ if (step.type === "single-select-agenda") {
             transition={{ duration: 0.3 }}
           >
             {/* Section heading */}
-            <h2
-              className="font-bold text-center mb-1 pb-2"
-              style={{
-                color: 'white',
-                fontSize: 'clamp(1.3rem, 3.5vw, 2.2rem)',
-                textShadow: '0 0 24px #00ddff',
-                borderBottom: '2px solid #00ddff',
-                lineHeight: 1.2,
-              }}
-            >
-              {step.section}
-            </h2>
+<h2
+  className="font-bold text-center mb-1 pb-2 w-full"
+  style={{
+    color: 'white',
+    fontSize: 'clamp(1.3rem, 3.5vw, 2.2rem)',
+    textShadow: '0 0 24px #00ddff',
+    borderBottom: '2px solid #00ddff',
+    lineHeight: 1.2,
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    display: 'block',
+    textAlign: 'center',
+  }}
+>
+  {step.section}
+</h2>
 
             {/* Sub-label */}
             <p

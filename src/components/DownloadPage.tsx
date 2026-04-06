@@ -76,10 +76,12 @@ const handleDownload = async () => {
               <CheckCircle2 size={40} className="text-[#00ddff]" />
             </div>
 
-            <h2 className="text-3xl font-bold mb-8 text-white">
-              Submission Successful
+            <h2 className="text-3xl font-bold mb-8 text-white" style={{textShadow: '0 0 24px #00ddff'}}>
+              Thank you for <br/> participation 
             </h2>
-
+  <p className="text-gray-400 mb-4" style={{textShadow: '0 0 24px #00ddff'}}>
+              Please find more details by downloading the document in your smartphone
+            </p>
             <button
               onClick={handleDownload}
               className="w-full ml-1 bg-[#00ddff] hover:bg-[#4ea9b7] text-navy font-bold py-4 rounded-lg flex items-center justify-center gap-2 transition-all"
