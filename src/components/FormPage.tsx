@@ -74,8 +74,8 @@ const { images } = useImages();
       subLabel: "Fill in both fields below",
       type: "multi-text",
       fields: [
-        { id: "fullName",     placeholder: "Employee Name" },
-        { id: "employeeCode", placeholder: "Employee Code" },
+        { id: "fullName",     placeholder: "Agent Name" },
+        { id: "employeeCode", placeholder: "Agent Code" },
       ],
       validate: () => {
         if (!formData.fullName?.trim())     return "Employee Name is required";
