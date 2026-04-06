@@ -8,6 +8,8 @@ import LapBg from '../assets/images/laptop/bg.png';
 import LapBg2 from '../assets/images/laptop/bg1.png';
 import MobBg from '../assets/images/mobile/bg.png';
 import MobBg2 from '../assets/images/mobile/bg1.png';
+import { useImages } from '../context/ImageContext';
+
 
 interface FormPageProps {
   formData: FormData;
@@ -51,7 +53,7 @@ export const FormPage: React.FC<FormPageProps> = ({ formData, errors, updateFiel
   const [currentStep, setCurrentStep] = useState(0);
   const [localError, setLocalError]   = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
+const { images } = useImages();
   type StepType = "multi-text" | "single-select-3col" | "single-select-custom" | "single-select-agenda";
 
   interface Step {
@@ -319,9 +321,19 @@ export const FormPage: React.FC<FormPageProps> = ({ formData, errors, updateFiel
       </div>
 
       {/* LOGOS — exact same as StartPage */}
+      <div className="hidden md:block absolute inset-0 z-0">
+        <img src={images.lapBg} alt="" className="absolute inset-0 w-full h-full object-cover" />
+        <img src={images.lapBg2} alt="" className="absolute inset-0 w-full h-full object-cover" />
+      </div>
+      <div className="block md:hidden absolute inset-0 z-0">
+        <img src={images.mobBg} alt="" className="absolute inset-0 w-full h-full object-cover" />
+        <img src={images.mobBg2} alt="" className="absolute inset-0 w-full h-full object-cover" />
+      </div>
+
+      {/* LOGOS */}
       <div className="absolute top-[17%] md:top-[19%] left-1/2 -translate-x-1/2 w-full max-w-[1200px] z-20 flex justify-between items-center">
-        <img src={LeftLogo}  alt="Left Logo"  className="h-[50px] md:h-[120px] w-auto ml-[12%] md:ml-[0%] lg:ml-[0%]" />
-        <img src={RightLogo} alt="Right Logo" className="h-[50px] md:h-[120px] w-auto mr-[10%] md:mr-[5%] lg:mr-[0%]" />
+        <img src={images.leftLogo} alt="Left Logo" className="h-[50px] md:h-[120px] w-auto ml-[12%] md:ml-[0%] lg:ml-[0%]" />
+        <img src={images.rightLogo} alt="Right Logo" className="h-[50px] md:h-[120px] w-auto mr-[10%] md:mr-[5%] lg:mr-[0%]" />
       </div>
 
       {/* CONTENT */}

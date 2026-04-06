@@ -11,6 +11,8 @@ import { FormPage } from "./components/FormPage";
 import { DownloadPage } from "./components/DownloadPage";
 import Loader from "./components/Loader";
 import { DecorativeElements } from "./components/DecorativeElements";
+import { ImagePreloader } from "./components/ImagePreloader";
+import { ImageProvider } from "./context/ImageContext";
 import { submitForm } from "./api/api";
 import { getPdfUrl } from "./constants";
 
@@ -28,14 +30,15 @@ export default function App() {
   const [currentPage, setCurrentPage] = useState<Page>("START");
   const [formData, setFormData] = useState<FormData>(INITIAL_FORM_DATA);
   const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>({});
+  const [isPreloaded, setIsPreloaded] = useState(false);
 
   const handleStart = () => setCurrentPage("FORM");
 
-  /* ── VALIDATION ──
-     Only validate fields that are actually collected in FormPage.
-     mobile & email are in FormData type but NOT asked in the form,
-     so we skip them here to avoid blocking submission.
-  */
+  const handleImagesLoaded = () => {
+    setIsPreloaded(true);
+  };
+
+  /* ── VALIDATION ── */
   const validateForm = () => {
     const newErrors: Partial<Record<keyof FormData, string>> = {};
 
@@ -73,10 +76,7 @@ export default function App() {
 
       try {
         await submitForm(formData);
-
-        // getPdfUrl takes agenda value directly (e.g. "Dealer Profitability")
         const pdfUrl = getPdfUrl(formData.agenda);
-
         setFormData((prev) => ({ ...prev, pdfUrl }));
         setCurrentPage("DOWNLOAD");
       } catch (error) {
@@ -102,31 +102,35 @@ export default function App() {
 
   /* ── RENDER ── */
   return (
-    <div className="min-h-screen flex flex-col relative">
-      <main className="flex-1 flex flex-col">
-        <AnimatePresence mode="wait">
-          {currentPage === "START" && (
-            <StartPage onStart={handleStart} />
-          )}
+    <ImagePreloader onLoaded={handleImagesLoaded}>
+      <ImageProvider>
+        <div className="min-h-screen flex flex-col relative">
+          <main className="flex-1 flex flex-col">
+            <AnimatePresence mode="wait">
+              {currentPage === "START" && (
+                <StartPage onStart={handleStart} />
+              )}
 
-          {currentPage === "FORM" && (
-            <FormPage
-              formData={formData}
-              errors={errors}
-              updateField={updateField}
-              onSubmit={handleSubmit}
-            />
-          )}
+              {currentPage === "FORM" && (
+                <FormPage
+                  formData={formData}
+                  errors={errors}
+                  updateField={updateField}
+                  onSubmit={handleSubmit}
+                />
+              )}
 
-          {currentPage === "LOADING" && <Loader />}
+              {currentPage === "LOADING" && <Loader />}
 
-          {currentPage === "DOWNLOAD" && (
-            <DownloadPage formData={formData} />
-          )}
-        </AnimatePresence>
-      </main>
+              {currentPage === "DOWNLOAD" && (
+                <DownloadPage formData={formData} />
+              )}
+            </AnimatePresence>
+          </main>
 
-      <DecorativeElements />
-    </div>
+          <DecorativeElements />
+        </div>
+      </ImageProvider>
+    </ImagePreloader>
   );
 }
