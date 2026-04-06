@@ -53,11 +53,11 @@ const Loader: React.FC = () => {
         </motion.div>
 
         <h2 className="text-2xl font-semibold text-white mb-2">
-          Processing Your Submission
+          Processing Your <br/> Submission
         </h2>
 
         <p className="text-gray-400">
-          Please wait while we prepare your download...
+          Please wait while<br/> we prepare your download...
         </p>
       </motion.div>
 

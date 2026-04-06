@@ -107,7 +107,7 @@ const handleDownload = async () => {
             </motion.div>
 
             <h2 className="text-2xl font-semibold text-white mb-2">
-              Your PDF will be downloaded shortly
+              Your PDF will be<br/> downloaded shortly
             </h2>
 
             <p className="text-gray-400">
@@ -126,7 +126,7 @@ const handleDownload = async () => {
             <CheckCircle2 size={64} className="text-green-400 mb-6" />
 
             <h2 className="text-2xl font-semibold text-white mb-2">
-              PDF Downloaded Successfully
+              PDF Downloaded <br/>Successfully
             </h2>
 
             <p className="text-gray-400">
