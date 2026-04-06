@@ -1,17 +1,191 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&display=swap');
 
-/* THEN everything else */
+/* Accord Font Face declarations */
+@font-face {
+    font-family: 'Accord';
+    src: url('Accord-Bold.eot');
+    src: local('Accord Bold'), local('Accord-Bold'),
+        url('Accord-Bold.eot?#iefix') format('embedded-opentype'),
+        url('Accord-Bold.woff2') format('woff2'),
+        url('Accord-Bold.woff') format('woff'),
+        url('Accord-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
 
+@font-face {
+    font-family: 'Accord';
+    src: url('Accord-Italic.eot');
+    src: local('Accord Italic'), local('Accord-Italic'),
+        url('Accord-Italic.eot?#iefix') format('embedded-opentype'),
+        url('Accord-Italic.woff2') format('woff2'),
+        url('Accord-Italic.woff') format('woff'),
+        url('Accord-Italic.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Accord';
+    src: url('Accord-Regular.eot');
+    src: local('Accord Regular'), local('Accord-Regular'),
+        url('Accord-Regular.eot?#iefix') format('embedded-opentype'),
+        url('Accord-Regular.woff2') format('woff2'),
+        url('Accord-Regular.woff') format('woff'),
+        url('Accord-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Accord';
+    src: url('Accord-Medium.eot');
+    src: local('Accord Medium'), local('Accord-Medium'),
+        url('Accord-Medium.eot?#iefix') format('embedded-opentype'),
+        url('Accord-Medium.woff2') format('woff2'),
+        url('Accord-Medium.woff') format('woff'),
+        url('Accord-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Accord';
+    src: url('Accord-ExtraLight.eot');
+    src: local('Accord ExtraLight'), local('Accord-ExtraLight'),
+        url('Accord-ExtraLight.eot?#iefix') format('embedded-opentype'),
+        url('Accord-ExtraLight.woff2') format('woff2'),
+        url('Accord-ExtraLight.woff') format('woff'),
+        url('Accord-ExtraLight.ttf') format('truetype');
+    font-weight: 200;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Accord';
+    src: url('Accord-MediumItalic.eot');
+    src: local('Accord Medium Italic'), local('Accord-MediumItalic'),
+        url('Accord-MediumItalic.eot?#iefix') format('embedded-opentype'),
+        url('Accord-MediumItalic.woff2') format('woff2'),
+        url('Accord-MediumItalic.woff') format('woff'),
+        url('Accord-MediumItalic.ttf') format('truetype');
+    font-weight: 500;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Accord';
+    src: url('Accord-Light.eot');
+    src: local('Accord Light'), local('Accord-Light'),
+        url('Accord-Light.eot?#iefix') format('embedded-opentype'),
+        url('Accord-Light.woff2') format('woff2'),
+        url('Accord-Light.woff') format('woff'),
+        url('Accord-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Accord';
+    src: url('Accord-LightItalic.eot');
+    src: local('Accord Light Italic'), local('Accord-LightItalic'),
+        url('Accord-LightItalic.eot?#iefix') format('embedded-opentype'),
+        url('Accord-LightItalic.woff2') format('woff2'),
+        url('Accord-LightItalic.woff') format('woff'),
+        url('Accord-LightItalic.ttf') format('truetype');
+    font-weight: 300;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Accord';
+    src: url('Accord-ExtraBold.eot');
+    src: local('Accord ExtraBold'), local('Accord-ExtraBold'),
+        url('Accord-ExtraBold.eot?#iefix') format('embedded-opentype'),
+        url('Accord-ExtraBold.woff2') format('woff2'),
+        url('Accord-ExtraBold.woff') format('woff'),
+        url('Accord-ExtraBold.ttf') format('truetype');
+    font-weight: 800;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Accord';
+    src: url('Accord-ExtraBoldItalic.eot');
+    src: local('Accord ExtraBold Italic'), local('Accord-ExtraBoldItalic'),
+        url('Accord-ExtraBoldItalic.eot?#iefix') format('embedded-opentype'),
+        url('Accord-ExtraBoldItalic.woff2') format('woff2'),
+        url('Accord-ExtraBoldItalic.woff') format('woff'),
+        url('Accord-ExtraBoldItalic.ttf') format('truetype');
+    font-weight: 800;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Accord';
+    src: url('Accord-ThinItalic.eot');
+    src: local('Accord Thin Italic'), local('Accord-ThinItalic'),
+        url('Accord-ThinItalic.eot?#iefix') format('embedded-opentype'),
+        url('Accord-ThinItalic.woff2') format('woff2'),
+        url('Accord-ThinItalic.woff') format('woff'),
+        url('Accord-ThinItalic.ttf') format('truetype');
+    font-weight: 100;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Accord';
+    src: url('Accord-ExtraLightItalic.eot');
+    src: local('Accord ExtraLight Italic'), local('Accord-ExtraLightItalic'),
+        url('Accord-ExtraLightItalic.eot?#iefix') format('embedded-opentype'),
+        url('Accord-ExtraLightItalic.woff2') format('woff2'),
+        url('Accord-ExtraLightItalic.woff') format('woff'),
+        url('Accord-ExtraLightItalic.ttf') format('truetype');
+    font-weight: 200;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Accord';
+    src: url('Accord-Thin.eot');
+    src: local('Accord Thin'), local('Accord-Thin'),
+        url('Accord-Thin.eot?#iefix') format('embedded-opentype'),
+        url('Accord-Thin.woff2') format('woff2'),
+        url('Accord-Thin.woff') format('woff'),
+        url('Accord-Thin.ttf') format('truetype');
+    font-weight: 100;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Accord';
+    src: url('Accord-BoldItalic.eot');
+    src: local('Accord Bold Italic'), local('Accord-BoldItalic'),
+        url('Accord-BoldItalic.eot?#iefix') format('embedded-opentype'),
+        url('Accord-BoldItalic.woff2') format('woff2'),
+        url('Accord-BoldItalic.woff') format('woff'),
+        url('Accord-BoldItalic.ttf') format('truetype');
+    font-weight: bold;
+    font-style: italic;
+}
+
+/* Theme configuration */
 @theme {
-  --font-sans: "Sora", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Accord", "Sora", ui-sans-serif, system-ui, sans-serif;
+  --font-accord: "Accord", "Sora", ui-sans-serif, system-ui, sans-serif;
   --color-navy: #0A192F;
   --color-gold: #D4AF37;
   --color-gold-hover: #B8962E;
 }
 
+/* Apply Accord font globally */
 body {
-  @apply bg-navy text-white font-sans antialiased;
+  @apply bg-navy font-accord antialiased;
+}
+
+/* Optional: If you want to use Sora for specific elements */
+.font-sora {
+  font-family: "Sora", ui-sans-serif, system-ui, sans-serif;
 }
 
 /* Custom Scrollbar */

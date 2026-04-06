@@ -78,7 +78,7 @@ export const StartPage: React.FC<StartPageProps> = ({ onStart }) => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="text-4xl md:text-6xl font-bold mb-6 tracking-tight"
+          className="text-4xl md:text-6xl font-bold mb-6 tracking-tight text-white"
         >
           Please fill the <span className="text-[#00ddff]">Form</span>
         </motion.h1>
