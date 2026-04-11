@@ -10,7 +10,8 @@ export const AGENDA_PDF_MAPPING: Record<string, string> = {
   "Expand Contractor Network": "1wbgrtOa3F8AYCUICeCGRBsjP3hazviyb",
   "Expand Dealer Network": "1smRL_g_Ekf9DZZU2EDp6PHz5SynAdNAM",
   "Surface Share Gain": "1mzqAPHWVMIh5ImY79zUg68dIYALvu4sB",
-  "Engage Network": "1G5oZL7yfxJnsN17aR2B1iH50nmfGP1xv", // (your "category expansion")
+  // "Engage Network": "1G5oZL7yfxJnsN17aR2B1iH50nmfGP1xv", 
+  "Category Penetration - Beyond Paints": "11oNv0pdqJGblKx6RtKGVr6c87TDjm2sP",
 };
 
 interface DownloadPageProps {
