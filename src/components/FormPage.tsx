@@ -42,7 +42,7 @@ const agendaOptions = [
   { value: "Dealer Profitability",      label: "Dealer profitability:",                           sub: "Improve Suprema ratios and product in relevant categories and work on dealer profitability" },
   { value: "Expand Dealer Network",     label: "Expand dealer network:",                          sub: "Increase LUB dealers in the network and hence improve projects servicing" },
   { value: "Expand Contractor Network", label: "Expand contractor network:",                      sub: "Identify contractors with capability to take up work in larger products" },
-  { value: "Engage Network",            label: "Engage network into more categories for growth:", sub: "Increase engagements of current set of dealers/contractors into more categories and products on offer" },
+  { value: "Engage Network",            label: "Category Penetration - Beyond Paints:", sub: "Increase the CC site penetration mainly with Category 2, flooring, Admixtures" },
   { value: "Surface Share Gain",        label: "Surface share & segemnt share gain:",             sub: "Identify and work on underpenetrated segments like factories, Govt. and PSUs in collaboration with network to expand business" },
 ];
 
